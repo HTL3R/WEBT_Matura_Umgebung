@@ -4,11 +4,6 @@ RUN apt-get update -y && apt-get install -y openssl zip unzip zlib1g-dev libpq-d
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 RUN docker-php-ext-install pdo pdo_sqlite zip gd exif
 
-# install nodejs
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-RUN apt-get update -y
-RUN apt install nodejs -y
-
 COPY httpd-vhosts.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
@@ -23,16 +18,8 @@ COPY . /var/www/html/
 
 RUN composer install
 
-# install vuejs
-RUN cd _clientside/vue-project && npm install 
-# install react
-RUN cd _clientside/react-project && npm install
-
 RUN chown -R www-data:www-data *
 
 EXPOSE 80
-EXPOSE 443
-EXPOSE 4200
-EXPOSE 8080
 
 ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
