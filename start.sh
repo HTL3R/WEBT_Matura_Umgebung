@@ -16,7 +16,7 @@ usage() {
 }
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-COMPOSE_FILE="$SCRIPT_DIR/server/compose.yaml"
+COMPOSE_FILE="$SCRIPT_DIR/compose.yaml"
 
 ACTION="up"
 BUILD=""
