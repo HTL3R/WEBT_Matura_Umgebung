@@ -5,6 +5,7 @@ Entwicklungsumgebung für die WEBT-Matura mit einem PHP/Symfony Server, einem Vu
 ## Voraussetzungen
 
 - [Docker](https://docs.docker.com/get-docker/) muss installiert sein.
+- Das Projekt sollte in einer Ubuntu WSL ausgeführt werden.
 
 ## Projektstruktur
 
@@ -67,11 +68,24 @@ Images bauen (ohne zu starten):
 ./build.sh react        # Nur React
 ```
 
+Clean Build (ohne Docker Cache):
+
+```bash
+./build.sh -c           # Alle Images ohne Cache
+./build.sh -c vue       # Nur Vue ohne Cache
+```
+
 Images bauen und als `.tar` exportieren (nach `_images/`):
 
 ```bash
 ./build.sh -e           # Alle Images
 ./build.sh -e server    # Nur Server
+```
+
+Optionen können kombiniert werden:
+
+```bash
+./build.sh -c -e        # Clean Build und Export aller Images
 ```
 
 Exportierte Images auf einem anderen Rechner laden:
