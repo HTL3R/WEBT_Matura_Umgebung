@@ -12,6 +12,8 @@ RUN echo "memory_limit = 2048M" >> /usr/local/etc/php/conf.d/execution.ini
 RUN echo "post_max_size = 100M" >> /usr/local/etc/php/conf.d/execution.ini
 RUN echo "upload_max_filesize = 100M" >> /usr/local/etc/php/conf.d/execution.ini
 
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+
 WORKDIR /var/www/html/
 
 COPY . /var/www/html/ 
