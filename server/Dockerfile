@@ -18,8 +18,12 @@ COPY . /var/www/html/
 
 RUN composer install
 
-RUN chown -R www-data:www-data *
+# Cache vendor so the entrypoint can restore it after a volume mount
+RUN cp -a /var/www/html/vendor /var/www/vendor-cache
 
+RUN find . -not -path './vendor/*' -exec chown www-data:www-data {} +
+
+COPY docker-entrypoint.sh /usr/local/bin/
 EXPOSE 80
 
-ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+ENTRYPOINT ["docker-entrypoint.sh"]
