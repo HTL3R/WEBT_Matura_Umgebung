@@ -8,6 +8,6 @@ if [ ! -d /var/www/html/vendor ]; then
     echo "==> vendor folder ready."
 fi
 
-find /var/www/html -not -path '*/vendor/*' -exec chown www-data:www-data {} +
+# find /var/www/html -not -path '*/vendor/*' -exec chown www-data:www-data {} +
 
 exec /usr/sbin/apache2ctl -D FOREGROUND

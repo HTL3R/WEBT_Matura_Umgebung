@@ -23,7 +23,7 @@ RUN composer install
 # Cache vendor so the entrypoint can restore it after a volume mount
 RUN cp -a /var/www/html/vendor /var/www/vendor-cache
 
-RUN find . -not -path './vendor/*' -exec chown www-data:www-data {} +
+# RUN find . -not -path './vendor/*' -exec chown www-data:www-data {} +
 
 COPY docker-entrypoint.sh /usr/local/bin/
 EXPOSE 80
