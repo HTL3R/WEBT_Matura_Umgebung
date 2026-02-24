@@ -14,25 +14,26 @@ usage() {
     echo "Default target: all"
     echo ""
     echo "Options:"
+    echo "  -c, --clean     Clean build (no cache)"
     echo "  -e, --export    Export built images as .tar files to _images/"
     echo "  -h, --help      Show this help"
 }
 
 build_vue() {
     echo "==> Building Vue.js image..."
-    docker build -t matura-webt-vue "$CLIENTDIR/vue-project"
+    docker build $CLEAN -t matura-webt-vue "$CLIENTDIR/vue-project"
     echo "==> Vue.js image built successfully."
 }
 
 build_react() {
     echo "==> Building React image..."
-    docker build -t matura-webt-react "$CLIENTDIR/react-project"
+    docker build $CLEAN -t matura-webt-react "$CLIENTDIR/react-project"
     echo "==> React image built successfully."
 }
 
 build_server() {
     echo "==> Building server image..."
-    docker build -t matura-webt-server "$SERVERDIR"
+    docker build $CLEAN -t matura-webt-server "$SERVERDIR"
     echo "==> Server image built successfully."
 }
 
@@ -44,11 +45,13 @@ export_image() {
     echo "==> Exported $name ($(du -h "$EXPORT_DIR/$name.tar" | cut -f1))"
 }
 
+CLEAN=""
 EXPORT=false
 TARGET=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
+        -c|--clean)  CLEAN="--no-cache"; shift ;;
         -e|--export) EXPORT=true; shift ;;
         -h|--help)   usage; exit 0 ;;
         vue|react|server|all) TARGET="$1"; shift ;;
