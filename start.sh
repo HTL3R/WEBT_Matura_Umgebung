@@ -15,6 +15,9 @@ usage() {
     echo "  -h, --help      Show this help"
 }
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+COMPOSE_FILE="$SCRIPT_DIR/server/compose.yaml"
+
 ACTION="up"
 BUILD=""
 DETACH=""
@@ -35,9 +38,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 case $ACTION in
-    up)      docker compose up $BUILD $DETACH $SERVICES ;;
-    stop)    docker compose stop $SERVICES ;;
-    restart) docker compose restart $SERVICES ;;
-    logs)    docker compose logs -f $SERVICES ;;
-    status)  docker compose ps ;;
+    up)      docker compose -f "$COMPOSE_FILE" up $BUILD $DETACH $SERVICES ;;
+    stop)    docker compose -f "$COMPOSE_FILE" stop $SERVICES ;;
+    restart) docker compose -f "$COMPOSE_FILE" restart $SERVICES ;;
+    logs)    docker compose -f "$COMPOSE_FILE" logs -f $SERVICES ;;
+    status)  docker compose -f "$COMPOSE_FILE" ps ;;
 esac

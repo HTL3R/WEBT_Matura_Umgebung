@@ -3,7 +3,8 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-CLIENTSIDE="$SCRIPT_DIR/_clientside"
+CLIENTDIR="$SCRIPT_DIR/client"
+SERVERDIR="$SCRIPT_DIR/server"
 EXPORT_DIR="$SCRIPT_DIR/_images"
 
 usage() {
@@ -19,19 +20,19 @@ usage() {
 
 build_vue() {
     echo "==> Building Vue.js image..."
-    docker build -t matura-webt-vue "$CLIENTSIDE/vue-project"
+    docker build -t matura-webt-vue "$CLIENTDIR/vue-project"
     echo "==> Vue.js image built successfully."
 }
 
 build_react() {
     echo "==> Building React image..."
-    docker build -t matura-webt-react "$CLIENTSIDE/react-project"
+    docker build -t matura-webt-react "$CLIENTDIR/react-project"
     echo "==> React image built successfully."
 }
 
 build_server() {
     echo "==> Building server image..."
-    docker build -t matura-webt-server "$SCRIPT_DIR"
+    docker build -t matura-webt-server "$SERVERDIR"
     echo "==> Server image built successfully."
 }
 

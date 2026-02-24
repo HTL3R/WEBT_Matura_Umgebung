@@ -12,22 +12,22 @@ services:
 
   vue:
     build:
-      context: ./_clientside/vue-project
+      context: ../client/vue-project
       dockerfile: Dockerfile
     image: matura-webt-vue
     restart: unless-stopped
     ports:
       - "${VUE_PORT:-5173}:5173"
     volumes:
-      - ./_clientside/vue-project/src:/app/src
+      - ../client/vue-project/src:/app/src
 
   react:
     build:
-      context: ./_clientside/react-project
+      context: ../client/react-project
       dockerfile: Dockerfile
     image: matura-webt-react
     restart: unless-stopped
     ports:
       - "${REACT_PORT:-5174}:5174"
     volumes:
-      - ./_clientside/react-project/src:/app/src
+      - ../client/react-project/src:/app/src
