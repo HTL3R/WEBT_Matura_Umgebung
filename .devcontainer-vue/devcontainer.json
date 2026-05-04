@@ -1,0 +1,22 @@
+{
+  "name": "WEBT Matura (Vue)",
+  "dockerComposeFile": [
+    "../compose.yaml",
+    "docker-compose.yml"
+  ],
+  "service": "vue",
+  "workspaceFolder": "/app",
+  "remoteUser": "node",
+  "forwardPorts": [
+    5173
+  ],
+  "postCreateCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "Vue.volar"
+      ]
+    }
+  }
+}

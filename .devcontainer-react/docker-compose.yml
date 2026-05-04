@@ -1,0 +1,8 @@
+services:
+  react:
+    volumes:
+      - ../client/react-project:/app:cached
+      - react_node_modules:/app/node_modules
+
+volumes:
+  react_node_modules:
