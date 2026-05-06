@@ -1,8 +1,0 @@
-services:
-  vue:
-    volumes:
-      - ../client/vue-project:/app:cached
-      - vue_node_modules:/app/node_modules
-
-volumes:
-  vue_node_modules:
