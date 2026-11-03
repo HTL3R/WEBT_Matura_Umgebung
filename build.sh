@@ -7,33 +7,54 @@ CLIENTDIR="$SCRIPT_DIR/client"
 SERVERDIR="$SCRIPT_DIR/server"
 EXPORT_DIR="$SCRIPT_DIR/_images"
 
+# --- Container engine detection -------------------------------------------
+# Default: docker. If podman is installed, podman is used instead.
+# Override with: CONTAINER_ENGINE=docker ./script.sh  (or =podman)
+detect_engine() {
+    if [[ -n "$CONTAINER_ENGINE" ]]; then
+        ENGINE="$CONTAINER_ENGINE"
+    elif command -v podman >/dev/null 2>&1; then
+        ENGINE="podman"
+    else
+        ENGINE="docker"
+    fi
+
+    if ! command -v "$ENGINE" >/dev/null 2>&1; then
+        echo "Error: '$ENGINE' is not installed." >&2
+        exit 1
+    fi
+}
+
 usage() {
     echo "Usage: $0 [options] [vue|react|server|all]"
     echo ""
-    echo "Builds Docker images for the specified service(s)."
+    echo "Builds container images for the specified service(s)."
     echo "Default target: all"
     echo ""
     echo "Options:"
     echo "  -c, --clean     Clean build (no cache)"
     echo "  -e, --export    Export built images as .tar files to _images/"
     echo "  -h, --help      Show this help"
+    echo ""
+    echo "Uses podman if installed, otherwise docker."
+    echo "Override with CONTAINER_ENGINE=docker|podman."
 }
 
 build_vue() {
     echo "==> Building Vue.js image..."
-    docker build $CLEAN -t matura-webt-vue "$CLIENTDIR/vue-project"
+    "$ENGINE" build $CLEAN -t matura-webt-vue "$CLIENTDIR/vue-project"
     echo "==> Vue.js image built successfully."
 }
 
 build_react() {
     echo "==> Building React image..."
-    docker build $CLEAN -t matura-webt-react "$CLIENTDIR/react-project"
+    "$ENGINE" build $CLEAN -t matura-webt-react "$CLIENTDIR/react-project"
     echo "==> React image built successfully."
 }
 
 build_server() {
     echo "==> Building server image..."
-    docker build $CLEAN -t matura-webt-server "$SERVERDIR"
+    "$ENGINE" build $CLEAN -t matura-webt-server "$SERVERDIR"
     echo "==> Server image built successfully."
 }
 
@@ -41,7 +62,8 @@ export_image() {
     local name="$1"
     mkdir -p "$EXPORT_DIR"
     echo "==> Exporting $name to $EXPORT_DIR/$name.tar ..."
-    docker save -o "$EXPORT_DIR/$name.tar" "$name"
+    rm -f "$EXPORT_DIR/$name.tar"
+    "$ENGINE" save -o "$EXPORT_DIR/$name.tar" "$name"
     echo "==> Exported $name ($(du -h "$EXPORT_DIR/$name.tar" | cut -f1))"
 }
 
@@ -60,6 +82,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 TARGET="${TARGET:-all}"
+
+detect_engine
+echo "==> Using $ENGINE"
 
 case "$TARGET" in
     vue)
