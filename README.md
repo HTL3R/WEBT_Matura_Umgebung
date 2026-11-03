@@ -4,7 +4,9 @@ Entwicklungsumgebung für die WEBT-Matura mit einem PHP/Symfony Server, einem Vu
 
 ## Voraussetzungen
 
-- [Docker](https://docs.docker.com/get-docker/) muss installiert sein.
+- [Docker](https://docs.docker.com/get-docker/) **oder** [Podman](https://podman.io/) (inkl. `podman-compose`) muss installiert sein.
+- Die Skripte verwenden standardmäßig Docker. Ist Podman installiert, wird Podman verwendet. Überschreiben mit `CONTAINER_ENGINE=docker ./start.sh` bzw. `CONTAINER_ENGINE=podman ./start.sh`.
+- Hinweis rootless Podman: Ports < 1024 sind nicht erlaubt, der Server läuft daher auf Port **8080** (änderbar mit `HTTP_PORT=...`).
 - Das Projekt sollte in einer Ubuntu WSL ausgeführt werden.
 
 ## Projektstruktur
@@ -68,7 +70,7 @@ Images bauen (ohne zu starten):
 ./build.sh react        # Nur React
 ```
 
-Clean Build (ohne Docker Cache):
+Clean Build (ohne Build-Cache):
 
 ```bash
 ./build.sh -c           # Alle Images ohne Cache
@@ -91,7 +93,7 @@ Optionen können kombiniert werden:
 Exportierte Images auf einem anderen Rechner laden:
 
 ```bash
-docker load -i _images/matura-webt-server.tar
+docker load -i _images/matura-webt-server.tar   # bzw. podman load -i ...
 ```
 
 ## Ports
